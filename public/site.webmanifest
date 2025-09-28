@@ -1,0 +1,9 @@
+{
+  "name": "Terminal Portfolio by Cameron Gonzalez",
+  "short_name": "Terminal",
+  "start_url": "/aboutme/",
+  "display": "standalone",
+  "background_color": "#1d2a35",
+  "theme_color": "#1d2a35"
+}
+
