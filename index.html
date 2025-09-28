@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <title>Terminal</title>
+    <meta name="title" content="Terminal Portfolio by Cameron Gonzalez" />
+    <meta
+      name="description"
+      content="Cameron Gonzalez's terminal-inspired portfolio built with React. Cameron is a full-stack developer based in Houston, TX."
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/cameronmg" />
+    <meta property="og:title" content="Terminal Portfolio by Cameron Gonzalez" />
+    <meta
+      property="og:description"
+      content="Cameron Gonzalez's terminal-inspired portfolio built with React. Cameron is a full-stack developer based in Houston, TX."
+    />
+    <meta
+      property="og:image"
+      content="https://github.com/cameronmg.png"
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://github.com/cameronmg" />
+    <meta property="twitter:title" content="Terminal Portfolio by Cameron Gonzalez" />
+    <meta
+      property="twitter:description"
+      content="Cameron Gonzalez's terminal-inspired portfolio built with React. Cameron is a full-stack developer based in Houston, TX."
+    />
+    <meta
+      property="twitter:image"
+      content="https://github.com/cameronmg.png"
+    />
+
+    <!-- Favicons and assets -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" href="/assets/terminal.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1d2a35" />
+    <meta name="msapplication-TileColor" content="#1d2a35" />
+    <meta name="theme-color" content="#1d2a35" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;700&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+
+    <!-- Splash screen styles and start time -->
+    <style>
+      /* Fullscreen overlay */
+      #splash-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000000; /* match GIF background */
+        opacity: 1;
+        transition: opacity 700ms ease;
+      }
+      #splash-screen.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      /* Green-tint the GIF while preserving black background */
+      #splash-screen img.splash-gif {
+        max-width: 90vw;
+        max-height: 90vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        /* Quick fade-in, then subtle zoom */
+        opacity: 0;
+        animation: splash-gif-fadein 1000ms ease-out forwards,
+                   splash-zoom 2600ms ease-in-out forwards;
+        will-change: transform, opacity;
+        /* Colorize to terminal green without affecting black */
+        filter: grayscale(1) sepia(1) hue-rotate(75deg) saturate(600%) brightness(1.1);
+      }
+      .splash-media {
+        transform: scale(0.5); /* ~50% smaller */
+        transform-origin: center;
+        will-change: transform;
+      }
+      @keyframes splash-zoom {
+        0% { transform: scale(0.98); }
+        65% { transform: scale(1.07); }
+        100% { transform: scale(1.00); }
+      }
+      @keyframes splash-gif-fadein {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      /* Crossfade main app with splash */
+      #root {
+        opacity: 0;
+        transition: opacity 700ms ease;
+      }
+      body.splash-done #root {
+        opacity: 1;
+      }
+
+      /* Respect reduced motion preferences */
+      @media (prefers-reduced-motion: reduce) {
+        #splash-screen { transition: opacity 200ms linear; }
+        #root { transition: opacity 200ms linear; }
+        #splash-screen img.splash-gif { animation: none; opacity: 1; }
+      }
+    </style>
+    <script>
+      // Record splash start as early as possible
+      window.__splashStart = Date.now();
+    </script>
+  </head>
+  <body>
+    <!-- Splash screen overlay -->
+    <div id="splash-screen" aria-hidden="true">
+      <div class="splash-media">
+        <img class="splash-gif" src="/assets/cat-splash-screen.gif" alt="Loading animation" />
+      </div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Hide splash after window load and at least 2s elapsed
+      (function () {
+        var MIN_DURATION = 2000; // ms
+        var start = window.__splashStart || Date.now();
+        function hideSplash() {
+          var elapsed = Date.now() - start;
+          var remaining = Math.max(0, MIN_DURATION - elapsed);
+          setTimeout(function () {
+            var el = document.getElementById('splash-screen');
+            if (!el) return;
+            // Fade in app as splash fades out
+            document.body.classList.add('splash-done');
+            el.classList.add('hidden');
+            // Remove from DOM after fade-out
+            setTimeout(function () {
+              if (el && el.parentNode) el.parentNode.removeChild(el);
+            }, 750);
+          }, remaining);
+        }
+        if (document.readyState === 'complete') {
+          hideSplash();
+        } else {
+          window.addEventListener('load', hideSplash);
+        }
+      })();
+    </script>
+  </body>
+</html>
