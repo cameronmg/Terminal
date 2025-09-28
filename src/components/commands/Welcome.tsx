@@ -32,7 +32,7 @@ const Welcome: React.FC = () => {
 `}
         </PreName>
         <Seperator>----</Seperator>
-        <div>Welcome to my terminal.</div>
+        <div>Hi.</div>
         <Seperator>----</Seperator>
         <div>
           Explore more of my work on <Link href="https://github.com/cameronmg">GitHub</Link>.
