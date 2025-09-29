@@ -6,8 +6,8 @@ const GlobalStyle = createGlobalStyle<{ theme: DefaultTheme }>`
   :root {
     /* Outer gap between viewport and border */
     --frame-margin: clamp(8px, 2vw, 14px);
-    /* Inner spacing between border and content */
-    --frame-gap: clamp(14px, 3vw, 28px);
+    /* Inner spacing between border and content (fixed for consistent padding) */
+    --frame-gap: 1.25rem; /* keep constant across screen sizes */
   }
   
   *, ::before, ::after {
