@@ -32,16 +32,10 @@ const Welcome: React.FC = () => {
 `}
         </PreName>
         <Seperator>----</Seperator>
-        <div>Hi.</div>
+        <div>Hi. Explore more of my work on <Link href="https://github.com/cameronmg">GitHub</Link>.</div>
         <Seperator>----</Seperator>
-        <div>
-          Explore more of my work on <Link href="https://github.com/cameronmg">GitHub</Link>.
-        </div>
+        <div>For a list of available commands, type `<Cmd>help</Cmd>`.</div>
         <Seperator>----</Seperator>
-        <div>
-          For a list of available commands, type `<Cmd>help</Cmd>`.
-        </div>
-
       </div>
     </HeroContainer>
   );
