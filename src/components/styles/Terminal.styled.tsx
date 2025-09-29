@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  padding: 1.25rem;
-  padding-top: 0.75rem;
+  /* Use #root padding as the only inner gutter */
+  padding: 0;
 
   display: flex;
   flex-direction: column-reverse;
@@ -14,9 +14,14 @@ export const Wrapper = styled.div`
   word-break: break-word;
   overflow-wrap: anywhere;
 
+  /* On small screens, anchor content to top-left (normal reading order) */
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+
   /* Reserve space for mobile action button so it doesn't overlap text */
   @media (max-width: 550px) {
-    padding-bottom: calc(1.25rem + 72px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(var(--frame-gap, 16px) + 72px + env(safe-area-inset-bottom, 0px));
   }
 `;
 
