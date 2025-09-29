@@ -113,6 +113,12 @@
         /* Respect border overlay; give content breathing room */
         padding: var(--frame-gap);
       }
+      /* On narrow screens, ensure top padding accounts for safe area */
+      @media (max-width: 600px) {
+        #root {
+          padding-top: calc(var(--frame-gap) + env(safe-area-inset-top, 0px));
+        }
+      }
       body.splash-done #root {
         opacity: 1;
       }
