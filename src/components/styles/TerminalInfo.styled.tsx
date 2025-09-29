@@ -15,3 +15,7 @@ export const WebsiteName = styled.span`
 export const User = styled.span`
   color: ${({ theme }) => theme.colors?.secondary};
 `;
+
+export const Symbol = styled.span`
+  color: #3B82F6; /* blue for ~ $ @ symbols */
+`;

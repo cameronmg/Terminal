@@ -79,7 +79,7 @@ const theme: Themes = {
       primary: "#E5E500",
       secondary: "#04A500",
       text: {
-        100: "#01FF00",
+        100: "#39FF14", // slightly brighter terminal green
         200: "#04A5B2",
         300: "#E50101",
       },

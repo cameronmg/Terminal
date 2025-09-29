@@ -58,6 +58,7 @@ export const Input = styled.input`
   flex: 1 1 auto;
   min-width: 0; /* prevent overflow in flex containers */
   width: auto;
+  background: transparent !important; /* show background gif through input */
 `;
 
 export const Hints = styled.span`
@@ -68,7 +69,7 @@ export const MobileEnterContainer = styled.div`
   position: fixed;
   left: 0;
   right: 0;
-  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(var(--frame-gap, 16px) + 12px + env(safe-area-inset-bottom, 0px));
   display: flex;
   justify-content: center;
   pointer-events: none; /* allow clicks only on the button */

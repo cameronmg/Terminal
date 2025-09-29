@@ -3,6 +3,10 @@ import { normalize } from "styled-normalize";
 
 const GlobalStyle = createGlobalStyle<{ theme: DefaultTheme }>`
   ${normalize}
+  :root {
+    /* Shared spacing between border and content */
+    --frame-gap: clamp(14px, 3vw, 28px);
+  }
   
   *, ::before, ::after {
     border-width: 0;
@@ -60,7 +64,7 @@ const GlobalStyle = createGlobalStyle<{ theme: DefaultTheme }>`
   }
 
   input[type=text] {
-    background-color: ${({ theme }) => theme.colors?.body};
+    background-color: transparent; /* allow background video to show through */
     color: ${({ theme }) => theme.colors?.text[100]};
     caret-color: ${({ theme }) => theme.colors?.primary};
   }

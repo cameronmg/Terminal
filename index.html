@@ -107,9 +107,68 @@
       #root {
         opacity: 0;
         transition: opacity 700ms ease;
+        /* Ensure app content sits above background gif */
+        position: relative;
+        z-index: 1;
+        /* Respect border overlay; give content breathing room */
+        padding: var(--frame-gap);
       }
       body.splash-done #root {
         opacity: 1;
+      }
+
+      /* Fixed centered background (video) behind the app */
+      #bg-center-gif {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none; /* never block interactions */
+        z-index: -1; /* layer behind border overlay */
+      }
+      #bg-center-gif video.bg-center-video,
+      #bg-center-gif img.bg-center-img {
+        max-width: 90vw;
+        max-height: 90vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        opacity: 0.5; /* 50% as requested */
+        transform: scale(0.5); /* display at ~50% size */
+        transform-origin: center;
+        will-change: transform;
+        /* Apply green tint like splash, but darker for contrast */
+        filter: grayscale(1) sepia(1) hue-rotate(75deg) saturate(500%) brightness(0.55) contrast(1.05);
+      }
+      /* Improve video clarity on narrow screens */
+      @media (max-width: 600px) {
+        #bg-center-gif video.bg-center-video,
+        #bg-center-gif img.bg-center-img {
+          transform: scale(0.6);
+          opacity: 0.7;
+          filter: grayscale(1) sepia(1) hue-rotate(75deg) saturate(500%) brightness(0.85) contrast(1.18);
+        }
+      }
+
+      /* Border overlay between content and video */
+      #border-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0; /* between #root (1) and bg video (-1) */
+        display: grid;
+        place-items: center;
+      }
+      #border-overlay .border-frame {
+        box-sizing: border-box;
+        width: calc(100vw - 18px);
+        height: calc(100vh - 18px);
+        border-radius: 24px;
+        border: 12px solid #88FF99; /* light green border */
+        background: rgba(46, 219, 18, 0.10); /* green fill: lighter than video, darker than text */
+        /* Subtle inner glow for a terminal vibe */
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
       }
 
       /* Respect reduced motion preferences */
@@ -130,6 +189,28 @@
       <div class="splash-media">
         <img class="splash-gif" src="assets/cat-splash-screen.gif" alt="Loading animation" />
       </div>
+    </div>
+    <!-- Fixed centered background video (stays on scroll) -->
+    <div id="bg-center-gif" aria-hidden="true">
+      <video
+        id="bg-center-video"
+        class="bg-center-video"
+        preload="auto"
+        muted
+        playsinline
+        autoplay
+        loop
+        aria-hidden="true"
+        poster="assets/catfire.gif"
+      >
+        <source src="assets/catfire_pingpong.webm" type="video/webm" />
+        <source src="assets/catfire_pingpong.mp4" type="video/mp4" />
+        <img class="bg-center-img" src="assets/catfire.gif" alt="Background animation" />
+      </video>
+    </div>
+    <!-- Green rounded border overlay -->
+    <div id="border-overlay" aria-hidden="true">
+      <div class="border-frame"></div>
     </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
@@ -157,6 +238,21 @@
           hideSplash();
         } else {
           window.addEventListener('load', hideSplash);
+        }
+      })();
+    </script>
+    <script>
+      // Ensure background plays at ~0.75x smoothly
+      (function () {
+        var video = document.getElementById('bg-center-video');
+        if (!video) return;
+        function setRate() {
+          try { video.playbackRate = 0.75; } catch (e) {}
+        }
+        if (video.readyState >= 1) {
+          setRate();
+        } else {
+          video.addEventListener('loadedmetadata', setRate, { once: true });
         }
       })();
     </script>
