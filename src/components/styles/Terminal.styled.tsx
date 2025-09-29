@@ -88,8 +88,9 @@ export const MobileEnterButton = styled.button`
   padding: 0.875rem 1.25rem;
   min-width: 110px;
   line-height: 1;
-  color: ${({ theme }) => theme.colors?.text[100]};
-  background: ${({ theme }) => theme.colors?.primary};
+  color: #000000; /* black text when enabled */
+  /* Use the same green as terminal text for strong contrast */
+  background: ${({ theme }) => theme.colors?.text[100]};
   box-shadow: 0 6px 18px rgba(0,0,0,0.3);
   transform: translateZ(0);
   transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease, opacity 150ms ease;
@@ -101,6 +102,7 @@ export const MobileEnterButton = styled.button`
 
   &:disabled {
     background: #6b7280; /* gray when no input */
+    color: #0a0a0a;
     opacity: 0.8;
     cursor: not-allowed;
     transform: none;
