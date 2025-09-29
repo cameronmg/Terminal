@@ -107,10 +107,16 @@
       #root {
         opacity: 0;
         transition: opacity 700ms ease;
-        /* Ensure app content sits above background gif */
-        position: relative;
-        z-index: 1;
-        /* Respect border overlay; give content breathing room */
+        /* Render content as a fixed inner viewport inside the border */
+        position: fixed;
+        top: var(--frame-margin, 12px);
+        right: var(--frame-margin, 12px);
+        bottom: var(--frame-margin, 12px);
+        left: var(--frame-margin, 12px);
+        z-index: 1; /* above border overlay */
+        /* Clip overflowing text top/bottom so it never crosses the border */
+        overflow: hidden;
+        /* Inner breathing room from the border */
         padding: var(--frame-gap);
       }
       /* On narrow screens, ensure top padding accounts for safe area */
@@ -163,13 +169,15 @@
         inset: 0;
         pointer-events: none;
         z-index: 0; /* between #root (1) and bg video (-1) */
-        display: grid;
-        place-items: center;
       }
       #border-overlay .border-frame {
         box-sizing: border-box;
-        width: calc(100vw - 18px);
-        height: calc(100vh - 18px);
+        position: absolute;
+        /* Ensure top/bottom borders remain visible on devices with notches */
+        top: calc(var(--frame-margin, 12px) + env(safe-area-inset-top, 0px));
+        right: var(--frame-margin, 12px);
+        bottom: calc(var(--frame-margin, 12px) + env(safe-area-inset-bottom, 0px));
+        left: var(--frame-margin, 12px);
         border-radius: 24px;
         border: 12px solid #88FF99; /* light green border */
         background: rgba(46, 219, 18, 0.10); /* green fill: lighter than video, darker than text */

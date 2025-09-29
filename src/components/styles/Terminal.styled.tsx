@@ -6,14 +6,8 @@ export const Wrapper = styled.div`
 
   display: flex;
   flex-direction: column-reverse;
-  /* Avoid mobile 100vh issues (URL bar) */
-  max-height: calc(100vh - 2rem);
-  @supports (height: 100dvh) {
-    max-height: calc(100dvh - 2rem);
-  }
-  @supports (height: 100svh) {
-    max-height: calc(100svh - 2rem);
-  }
+  /* Fill the inner viewport (inside border) and scroll only inside */
+  height: 100%;
   overflow-y: auto;
   /* Prevent horizontal overflow on narrow devices */
   overflow-x: hidden;

@@ -4,7 +4,9 @@ import { normalize } from "styled-normalize";
 const GlobalStyle = createGlobalStyle<{ theme: DefaultTheme }>`
   ${normalize}
   :root {
-    /* Shared spacing between border and content */
+    /* Outer gap between viewport and border */
+    --frame-margin: clamp(8px, 2vw, 14px);
+    /* Inner spacing between border and content */
     --frame-gap: clamp(14px, 3vw, 28px);
   }
   
