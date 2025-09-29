@@ -31,6 +31,12 @@ const GlobalStyle = createGlobalStyle<{ theme: DefaultTheme }>`
     display: block;
   }
 
+  html, body {
+    height: 100%;
+    overflow: hidden; /* prevent any outer scrollbars */
+    overscroll-behavior: none; /* stop rubber-banding */
+  }
+
   body {
     font-family: 'IBM Plex Mono', monospace;
     font-weight: 500;
@@ -44,7 +50,7 @@ const GlobalStyle = createGlobalStyle<{ theme: DefaultTheme }>`
     @supports (height: 100svh) {
       min-height: 100svh;
     }
-    overflow-x: hidden; /* avoid side scroll on very small devices */
+    /* ensure no outer scrollbars, handled above */
   }
 
   /* ===== Custom Scroll Bar ===== */

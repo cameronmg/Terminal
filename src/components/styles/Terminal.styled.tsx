@@ -51,6 +51,17 @@ export const OutputScroll = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
 
+  /* Hide vertical scrollbar but keep scrolling enabled */
+  -ms-overflow-style: none; /* IE and legacy Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    width: 0px; /* Chrome/Safari/Edge */
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
   /* Reserve space for mobile action button so it doesn't overlap text */
   @media (max-width: 550px) {
     padding-bottom: calc(var(--frame-gap, 16px) + 72px + env(safe-area-inset-bottom, 0px));
