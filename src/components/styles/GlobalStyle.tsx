@@ -30,6 +30,15 @@ const GlobalStyle = createGlobalStyle<{ theme: DefaultTheme }>`
     font-weight: 500;
     background-color: ${({ theme }) => theme.colors?.body};
     color: ${({ theme }) => theme.colors?.text[100]};
+    width: 100%;
+    min-height: 100vh;
+    @supports (height: 100dvh) {
+      min-height: 100dvh;
+    }
+    @supports (height: 100svh) {
+      min-height: 100svh;
+    }
+    overflow-x: hidden; /* avoid side scroll on very small devices */
   }
 
   /* ===== Custom Scroll Bar ===== */

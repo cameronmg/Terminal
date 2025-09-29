@@ -6,8 +6,19 @@ export const Wrapper = styled.div`
 
   display: flex;
   flex-direction: column-reverse;
+  /* Avoid mobile 100vh issues (URL bar) */
   max-height: calc(100vh - 2rem);
+  @supports (height: 100dvh) {
+    max-height: calc(100dvh - 2rem);
+  }
+  @supports (height: 100svh) {
+    max-height: calc(100svh - 2rem);
+  }
   overflow-y: auto;
+  /* Prevent horizontal overflow on narrow devices */
+  overflow-x: hidden;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 `;
 
 export const CmdNotFound = styled.div`
@@ -42,10 +53,8 @@ export const Form = styled.form`
 
 export const Input = styled.input`
   flex-grow: 1;
-
-  @media (max-width: 550px) {
-    min-width: 85%;
-  }
+  width: 100%;
+  min-width: 0; /* prevent overflow in flex containers */
 `;
 
 export const Hints = styled.span`

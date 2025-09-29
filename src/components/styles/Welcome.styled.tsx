@@ -22,8 +22,15 @@ export const PreName = styled.pre`
   font-family: 'IBM Plex Mono', monospace;
   line-height: 1;
   padding: 0 0.5rem;
-  /* Dynamically scale ASCII to viewport, capped for readability */
-  font-size: clamp(4px, calc((100vw - 2.5rem) / 68), 16px);
+  max-width: 100%;
+  overflow: hidden;
+  /* Dynamically scale ASCII to viewport, capped for readability.
+     Account for terminal padding (1.25rem*2) + local padding (0.5rem*2) = 3.5rem */
+  font-size: clamp(3px, calc((100vw - 3.5rem) / 68), 16px);
+  @media (max-width: 360px) {
+    /* Tighten spacing slightly on very small screens */
+    letter-spacing: -0.25px;
+  }
 `;
 
 export const PreWrapper = styled.div`
