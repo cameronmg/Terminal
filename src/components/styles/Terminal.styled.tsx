@@ -50,6 +50,9 @@ export const OutputScroll = styled.div`
   min-height: 0; /* allow shrink inside flex parent */
   overflow-y: auto;
   overflow-x: hidden;
+  scroll-behavior: smooth; /* smooth programmatic and keyboard scrolling */
+  -webkit-overflow-scrolling: touch; /* momentum scroll on iOS */
+  overscroll-behavior: contain; /* prevent outer page from scrolling */
 
   /* Hide vertical scrollbar but keep scrolling enabled */
   -ms-overflow-style: none; /* IE and legacy Edge */

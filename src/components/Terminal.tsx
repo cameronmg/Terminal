@@ -63,6 +63,7 @@ export const termContext = createContext<Term>({
 
 const Terminal = () => {
   const containerRef = useRef(null);
+  const outputRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -111,6 +112,28 @@ const Terminal = () => {
       document.removeEventListener("click", handleDivClick);
     };
   }, [containerRef]);
+
+  // Smoothly scroll to the bottom when new output is rendered
+  const scrollToBottom = useCallback((behavior: ScrollBehavior = "smooth") => {
+    const el = outputRef.current;
+    if (!el) return;
+    try {
+      el.scrollTo({ top: el.scrollHeight, behavior });
+    } catch {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, []);
+
+  // Scroll after history changes or a rerendered output
+  useEffect(() => {
+    scrollToBottom("smooth");
+  }, [cmdHistory, rerender, scrollToBottom]);
+
+  // Ensure initial position is at the bottom without animation
+  useEffect(() => {
+    scrollToBottom("auto");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Keyboard Press
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -192,7 +215,7 @@ const Terminal = () => {
 
   return (
     <Wrapper data-testid="terminal-wrapper" ref={containerRef}>
-      <OutputScroll>
+      <OutputScroll ref={outputRef}>
         {hints.length > 1 && (
           <div>
             {hints.map(hCmd => (
