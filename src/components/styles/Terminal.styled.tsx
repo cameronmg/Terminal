@@ -19,6 +19,11 @@ export const Wrapper = styled.div`
   overflow-x: hidden;
   word-break: break-word;
   overflow-wrap: anywhere;
+
+  /* Reserve space for mobile action button so it doesn't overlap text */
+  @media (max-width: 550px) {
+    padding-bottom: calc(1.25rem + 72px + env(safe-area-inset-bottom, 0px));
+  }
 `;
 
 export const CmdNotFound = styled.div`
@@ -57,4 +62,48 @@ export const Input = styled.input`
 
 export const Hints = styled.span`
   margin-right: 0.875rem;
+`;
+
+export const MobileEnterContainer = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  justify-content: center;
+  pointer-events: none; /* allow clicks only on the button */
+  z-index: 1000;
+
+  @media (min-width: 551px) {
+    display: none;
+  }
+`;
+
+export const MobileEnterButton = styled.button`
+  pointer-events: auto;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.875rem 1.25rem;
+  min-width: 110px;
+  line-height: 1;
+  color: ${({ theme }) => theme.colors?.text[100]};
+  background: ${({ theme }) => theme.colors?.primary};
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+  transform: translateZ(0);
+  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease, opacity 150ms ease;
+
+  &:hover, &:active {
+    transform: scale(1.06);
+    filter: brightness(1.05);
+  }
+
+  &:disabled {
+    background: #6b7280; /* gray when no input */
+    opacity: 0.8;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+  }
 `;

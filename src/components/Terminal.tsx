@@ -17,6 +17,8 @@ import {
   MobileBr,
   MobileSpan,
   Wrapper,
+  MobileEnterContainer,
+  MobileEnterButton,
 } from "./styles/Terminal.styled";
 import { argTab } from "../utils/funcs";
 
@@ -61,6 +63,7 @@ export const termContext = createContext<Term>({
 const Terminal = () => {
   const containerRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const [inputVal, setInputVal] = useState("");
   const [cmdHistory, setCmdHistory] = useState<string[]>(["welcome"]);
@@ -83,6 +86,12 @@ const Terminal = () => {
     setRerender(true);
     setHints([]);
     setPointer(-1);
+  };
+
+  const handleMobileEnter = () => {
+    if (!inputVal.trim()) return;
+    // Submit the same form as pressing Enter on keyboard
+    formRef.current?.requestSubmit?.();
   };
 
   const clearHistory = () => {
@@ -188,7 +197,7 @@ const Terminal = () => {
           ))}
         </div>
       )}
-      <Form onSubmit={handleSubmit}>
+      <Form ref={formRef} onSubmit={handleSubmit}>
         <label htmlFor="terminal-input">
           <TermInfo /> <MobileBr />
           <MobileSpan>&#62;</MobileSpan>
@@ -240,6 +249,16 @@ const Terminal = () => {
           </div>
         );
       })}
+      <MobileEnterContainer>
+        <MobileEnterButton
+          type="button"
+          disabled={!inputVal.trim()}
+          onClick={handleMobileEnter}
+          aria-label="Run command"
+        >
+          Enter
+        </MobileEnterButton>
+      </MobileEnterContainer>
     </Wrapper>
   );
 };
