@@ -5,24 +5,16 @@ export const Wrapper = styled.div`
   padding: 0;
 
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   /* Fill the inner viewport (inside border) and scroll only inside */
   height: 100%;
-  overflow-y: auto;
+  overflow: hidden;
   /* Prevent horizontal overflow on narrow devices */
   overflow-x: hidden;
   word-break: break-word;
   overflow-wrap: anywhere;
 
-  /* On small screens, anchor content to top-left (normal reading order) */
-  @media (max-width: 600px) {
-    flex-direction: column;
-  }
-
-  /* Reserve space for mobile action button so it doesn't overlap text */
-  @media (max-width: 550px) {
-    padding-bottom: calc(var(--frame-gap, 16px) + 72px + env(safe-area-inset-bottom, 0px));
-  }
+  /* Reserve space handled inside OutputScroll */
 `;
 
 export const CmdNotFound = styled.div`
@@ -51,6 +43,18 @@ export const Form = styled.form`
   display: flex;
   align-items: baseline;
   flex-wrap: nowrap;
+`;
+
+export const OutputScroll = styled.div`
+  flex: 1 1 auto;
+  min-height: 0; /* allow shrink inside flex parent */
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Reserve space for mobile action button so it doesn't overlap text */
+  @media (max-width: 550px) {
+    padding-bottom: calc(var(--frame-gap, 16px) + 72px + env(safe-area-inset-bottom, 0px));
+  }
 `;
 
 export const Input = styled.input`

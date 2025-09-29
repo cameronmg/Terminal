@@ -19,6 +19,7 @@ import {
   Wrapper,
   MobileEnterContainer,
   MobileEnterButton,
+  OutputScroll,
 } from "./styles/Terminal.styled";
 import { argTab } from "../utils/funcs";
 
@@ -81,7 +82,8 @@ const Terminal = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setCmdHistory([inputVal, ...cmdHistory]);
+    // Append so newest output appears just above the input at bottom
+    setCmdHistory([...cmdHistory, inputVal]);
     setInputVal("");
     setRerender(true);
     setHints([]);
@@ -190,13 +192,48 @@ const Terminal = () => {
 
   return (
     <Wrapper data-testid="terminal-wrapper" ref={containerRef}>
-      {hints.length > 1 && (
-        <div>
-          {hints.map(hCmd => (
-            <Hints key={hCmd}>{hCmd}</Hints>
-          ))}
-        </div>
-      )}
+      <OutputScroll>
+        {hints.length > 1 && (
+          <div>
+            {hints.map(hCmd => (
+              <Hints key={hCmd}>{hCmd}</Hints>
+            ))}
+          </div>
+        )}
+        {cmdHistory.map((cmdH, index) => {
+          const commandArray = _.split(_.trim(cmdH), " ");
+          const validCommand = _.find(commands, { cmd: commandArray[0] });
+          const contextValue = {
+            arg: _.drop(commandArray),
+            history: cmdHistory,
+            rerender,
+            index,
+            clearHistory,
+          };
+          return (
+            <div key={_.uniqueId(`${cmdH}_`)}>
+              <div>
+                <TermInfo />
+                <MobileBr />
+                <MobileSpan>&#62;</MobileSpan>
+                <span data-testid="input-command">{cmdH}</span>
+              </div>
+              {validCommand ? (
+                <termContext.Provider value={contextValue}>
+                  <Output index={index} cmd={commandArray[0]} />
+                </termContext.Provider>
+              ) : cmdH === "" ? (
+                <Empty />
+              ) : (
+                <CmdNotFound data-testid={`not-found-${index}`}>
+                  command not found: {cmdH}
+                </CmdNotFound>
+              )}
+            </div>
+          );
+        })}
+      </OutputScroll>
+
       <Form ref={formRef} onSubmit={handleSubmit}>
         <label htmlFor="terminal-input">
           <TermInfo /> <MobileBr />
@@ -216,39 +253,6 @@ const Terminal = () => {
           onChange={handleChange}
         />
       </Form>
-
-      {cmdHistory.map((cmdH, index) => {
-        const commandArray = _.split(_.trim(cmdH), " ");
-        const validCommand = _.find(commands, { cmd: commandArray[0] });
-        const contextValue = {
-          arg: _.drop(commandArray),
-          history: cmdHistory,
-          rerender,
-          index,
-          clearHistory,
-        };
-        return (
-          <div key={_.uniqueId(`${cmdH}_`)}>
-            <div>
-              <TermInfo />
-              <MobileBr />
-              <MobileSpan>&#62;</MobileSpan>
-              <span data-testid="input-command">{cmdH}</span>
-            </div>
-            {validCommand ? (
-              <termContext.Provider value={contextValue}>
-                <Output index={index} cmd={commandArray[0]} />
-              </termContext.Provider>
-            ) : cmdH === "" ? (
-              <Empty />
-            ) : (
-              <CmdNotFound data-testid={`not-found-${index}`}>
-                command not found: {cmdH}
-              </CmdNotFound>
-            )}
-          </div>
-        );
-      })}
       <MobileEnterContainer>
         <MobileEnterButton
           type="button"
