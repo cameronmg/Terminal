@@ -232,27 +232,26 @@ const Terminal = () => {
             </div>
           );
         })}
+        <Form ref={formRef} onSubmit={handleSubmit}>
+          <label htmlFor="terminal-input">
+            <TermInfo /> <MobileBr />
+            <MobileSpan>&#62;</MobileSpan>
+          </label>
+          <Input
+            title="terminal-input"
+            type="text"
+            id="terminal-input"
+            autoComplete="off"
+            spellCheck="false"
+            autoFocus
+            autoCapitalize="off"
+            ref={inputRef}
+            value={inputVal}
+            onKeyDown={handleKeyDown}
+            onChange={handleChange}
+          />
+        </Form>
       </OutputScroll>
-
-      <Form ref={formRef} onSubmit={handleSubmit}>
-        <label htmlFor="terminal-input">
-          <TermInfo /> <MobileBr />
-          <MobileSpan>&#62;</MobileSpan>
-        </label>
-        <Input
-          title="terminal-input"
-          type="text"
-          id="terminal-input"
-          autoComplete="off"
-          spellCheck="false"
-          autoFocus
-          autoCapitalize="off"
-          ref={inputRef}
-          value={inputVal}
-          onKeyDown={handleKeyDown}
-          onChange={handleChange}
-        />
-      </Form>
       <MobileEnterContainer>
         <MobileEnterButton
           type="button"
