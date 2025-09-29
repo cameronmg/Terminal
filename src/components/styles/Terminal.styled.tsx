@@ -32,7 +32,7 @@ export const Empty = styled.div`
 
 export const MobileSpan = styled.span`
   line-height: 1.5rem;
-  margin-right: 0.75rem;
+  margin-right: 1ch;
 
   @media (min-width: 550px) {
     display: none;
@@ -40,21 +40,19 @@ export const MobileSpan = styled.span`
 `;
 
 export const MobileBr = styled.br`
-  @media (min-width: 550px) {
-    display: none;
-  }
+  display: none;
 `;
 
 export const Form = styled.form`
-  @media (min-width: 550px) {
-    display: flex;
-  }
+  display: flex;
+  align-items: baseline;
+  flex-wrap: nowrap;
 `;
 
 export const Input = styled.input`
-  flex-grow: 1;
-  width: 100%;
+  flex: 1 1 auto;
   min-width: 0; /* prevent overflow in flex containers */
+  width: auto;
 `;
 
 export const Hints = styled.span`
