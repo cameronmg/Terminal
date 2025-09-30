@@ -107,6 +107,20 @@ Error generating stack: `+s.message+`
     /* ensure no outer scrollbars, handled above */
   }
 
+  /* Prefer wrapping long tokens anywhere to avoid overflow on narrow screens */
+  :where(p, span, a, div, li, dd, dt, h1, h2, h3, h4, h5, h6) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+  }
+
+  /* Preserve formatting for ASCII-art and preformatted blocks */
+  pre, code, kbd, samp {
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: manual;
+  }
+
   /* ===== Custom Scroll Bar ===== */
   /* width */
   ::-webkit-scrollbar {
@@ -294,7 +308,10 @@ function print() { __p += __j.call(arguments, '') }
   color: ${({theme:e})=>{var n;return(n=e.colors)==null?void 0:n.secondary}};
   text-decoration: none;
   line-height: 1.5rem;
-  white-space: nowrap;
+  /* Allow wrapping on small screens to avoid overflow */
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   border-bottom: 2px dashed ${({theme:e})=>{var n;return(n=e.colors)==null?void 0:n.secondary}};
 
   &:hover {
