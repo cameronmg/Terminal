@@ -110,6 +110,17 @@
             var img = video.querySelector('img.bg-center-img');
             setSrcWithFallback(img, '/Terminal/assets/catfire.gif', '/Terminal/dist/assets/catfire.gif');
           }
+
+          // Favicons (optional): try root assets then dist assets
+          var iconLinks = document.querySelectorAll('link[rel~="icon"], link[rel="shortcut icon"]');
+          iconLinks.forEach(function(link){
+            var href = '/Terminal/assets/terminal.png?v=2';
+            var fallback = '/Terminal/dist/assets/terminal.png?v=2';
+            var test = new Image();
+            test.onerror = function(){ link.href = fallback; };
+            test.src = href;
+            link.href = href;
+          });
         } catch (e) {}
       })();
     </script>
