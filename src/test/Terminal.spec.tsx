@@ -123,7 +123,6 @@ describe("Terminal Component", () => {
       "history",
       "projects",
       "socials",
-      "themes",
     ];
     otherCmds.forEach(cmd => {
       it(`should render ${cmd} component when user type '${cmd}' cmd`, async () => {
@@ -146,13 +145,7 @@ describe("Terminal Component", () => {
       );
     });
 
-    it("should open mail app when user type 'email' cmd", async () => {
-      await user.type(terminalInput, "email{enter}");
-      expect(window.open).toHaveBeenCalled();
-      expect(screen.getByTestId("latest-output").firstChild?.textContent).toBe(
-        "cameron.gonzalez.michael@gmail.com"
-      );
-    });
+    // 'email' command removed
 
     it("should show usage when projects do not have redirect targets", async () => {
       await user.type(terminalInput, "projects go 1{enter}");
@@ -173,7 +166,7 @@ describe("Terminal Component", () => {
   });
 
   describe("Invalid Arguments", () => {
-    const specialUsageCmds = ["themes", "socials", "projects"];
+    const specialUsageCmds = ["socials", "projects"];
     const usageCmds = allCmds.filter(
       cmd => !["echo", ...specialUsageCmds].includes(cmd)
     );
@@ -194,7 +187,7 @@ describe("Terminal Component", () => {
       });
 
       it(`should return usage component for '${cmd}' cmd with extra args`, async () => {
-        const arg = cmd === "themes" ? "set light" : "go 1";
+        const arg = "go 1";
         await user.type(terminalInput, `${cmd} ${arg} extra-arg{enter}`);
         expect(screen.getByTestId(`${cmd}-invalid-arg`)).toBeInTheDocument();
       });
@@ -202,11 +195,7 @@ describe("Terminal Component", () => {
       it(`should return usage component for '${cmd}' cmd with incorrect option`, async () => {
         window.open = vi.fn();
 
-        if (cmd === "themes") {
-          await user.type(terminalInput, `themes set espresso{enter}`);
-          await user.type(terminalInput, `themes go light{enter}`);
-          expect(window.open).toHaveBeenCalledTimes(1);
-        } else if (cmd === "socials") {
+        if (cmd === "socials") {
           await user.type(terminalInput, `socials go 1{enter}`);
           await user.type(terminalInput, `socials set 1{enter}`);
           expect(window.open).toHaveBeenCalledTimes(1);
@@ -217,7 +206,7 @@ describe("Terminal Component", () => {
 
         expect(screen.getByTestId(`${cmd}-invalid-arg`)).toBeInTheDocument();
 
-        // TODO: Test theme change
+        // Themes removed
       });
     });
   });

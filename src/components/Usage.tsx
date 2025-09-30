@@ -1,18 +1,17 @@
 import { UsageDiv } from "./styles/Output.styled";
 
 type Props = {
-  cmd: "themes" | "projects" | "socials";
+  cmd: "projects" | "socials";
   marginY?: boolean;
 };
 
 const arg = {
-  themes: { placeholder: "theme-name", example: "ubuntu" },
   projects: { placeholder: "project-id", example: "1" },
   socials: { placeholder: "social-no", example: "1" },
-};
+} as const;
 
 const Usage: React.FC<Props> = ({ cmd, marginY = false }) => {
-  const action = cmd === "themes" ? "set" : "go";
+  const action = "go";
   return (
     <UsageDiv data-testid={`${cmd}-invalid-arg`} marginY={marginY}>
       Usage: {cmd} {action} &#60;{arg[cmd].placeholder}&#62; <br />
