@@ -20,6 +20,7 @@ export const Wrapper = styled.div`
 export const CmdNotFound = styled.div`
   margin-top: 0.25rem;
   margin-bottom: 1rem;
+  color: #ff4d4f; /* red for error messages */
 `;
 
 export const Empty = styled.div`

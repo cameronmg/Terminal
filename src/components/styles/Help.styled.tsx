@@ -29,8 +29,16 @@ export const KeyContainer = styled.div`
   @media (max-width: 550px) {
     display: none;
   }
+  /* Hide keyboard shortcut hints on touch devices */
+  @media (pointer: coarse) {
+    display: none;
+  }
 
   div {
     margin-top: 0.25rem;
   }
+`;
+
+export const EmLink = styled.span`
+  color: #ffd700; /* yellow for emphasized links (e.g., GitHub) */
 `;

@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { ProjectsIntro } from "../styles/Projects.styled";
-import { Cmd, CmdDesc, CmdList, HelpWrapper } from "../styles/Help.styled";
+import { Cmd, CmdDesc, CmdList, HelpWrapper, EmLink } from "../styles/Help.styled";
 import {
   checkRedirect,
   generateTabs,
@@ -45,7 +45,7 @@ const Socials: React.FC = () => {
         <CmdList key={title}>
           <Cmd>{`${id}. ${title}`}</Cmd>
           {generateTabs(tab)}
-          <CmdDesc>- {url}</CmdDesc>
+          <CmdDesc>- <EmLink>{url}</EmLink></CmdDesc>
         </CmdList>
       ))}
       <Usage cmd="socials" marginY />

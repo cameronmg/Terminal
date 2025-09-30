@@ -13,4 +13,5 @@ export const UsageDiv = styled.div<{ marginY?: boolean }>`
   margin-top: ${props => (props.marginY ? "0.75rem" : "0.25rem")};
   margin-bottom: 0.75rem;
   line-height: 1.5rem;
+  color: #ff4d4f; /* red for invalid-argument usage messages */
 `;
