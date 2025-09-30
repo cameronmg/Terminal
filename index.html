@@ -38,19 +38,77 @@
       content="https://github.com/cameronmg.png"
     />
 
-    <!-- GitHub Pages redirect (only on github.io) -->
+    <!-- GitHub Pages asset + bundle loader (handles branch-based and Actions) -->
     <script>
       (function () {
         try {
-          var host = window.location.hostname || "";
-          var path = window.location.pathname || "/";
-          var onGitHubPages = /\.github\.io$/.test(host);
-          var inRepoRoot = path === "/Terminal/" || path === "/Terminal" || path === "/Terminal/index.html";
-          var alreadyInDist = /\/Terminal\/dist\/?/.test(path);
-          if (onGitHubPages && inRepoRoot && !alreadyInDist) {
-            var target = "/Terminal/dist/";
-            // Use replace so back button doesn’t keep old URL
-            window.location.replace(target);
+          var onGitHubPages = /\.github\.io$/.test(location.hostname || "");
+          if (!onGitHubPages) return; // leave dev behavior intact
+
+          // Current built bundle filename from dist/assets
+          var BUNDLE = "index-664bb3d6.js"; // update on rebuilds
+
+          function injectScript(src, onErr) {
+            var s = document.createElement('script');
+            s.type = 'module';
+            s.crossOrigin = '';
+            s.src = src;
+            if (onErr) s.onerror = onErr;
+            document.head.appendChild(s);
+          }
+
+          // Try Actions deployment first: root has /Terminal/assets
+          injectScript('/Terminal/assets/' + BUNDLE, function () {
+            // Fallback to branch-based Pages using repo dist: /Terminal/dist/assets
+            injectScript('/Terminal/dist/assets/' + BUNDLE);
+          });
+
+          // Fix splash and background asset URLs at runtime with fallback
+          function setSrcWithFallback(el, primary, fallback) {
+            if (!el) return;
+            var triedFallback = false;
+            function tryFallback() {
+              if (triedFallback) return;
+              triedFallback = true;
+              el.src = fallback;
+            }
+            el.addEventListener('error', tryFallback, { once: true });
+            el.src = primary;
+          }
+          function setAttrWithFallback(el, attr, primary, fallback) {
+            if (!el) return;
+            var test = new Image();
+            test.onerror = function () { el.setAttribute(attr, fallback); };
+            test.onload = function () { /* primary ok */ };
+            test.src = primary;
+            // set primary first; will be replaced on error
+            el.setAttribute(attr, primary);
+          }
+
+          // Splash GIF
+          var splash = document.querySelector('#splash-screen img.splash-gif');
+          setSrcWithFallback(
+            splash,
+            '/Terminal/assets/cat-splash-screen.gif',
+            '/Terminal/dist/assets/cat-splash-screen.gif'
+          );
+
+          // Background video poster and sources
+          var video = document.getElementById('bg-center-video');
+          if (video) {
+            setAttrWithFallback(
+              video,
+              'poster',
+              '/Terminal/assets/catfire.gif',
+              '/Terminal/dist/assets/catfire.gif'
+            );
+            var srcWebm = video.querySelector('source[type="video/webm"]');
+            var srcMp4 = video.querySelector('source[type="video/mp4"]');
+            if (srcWebm) setAttrWithFallback(srcWebm, 'src', '/Terminal/assets/catfire_pingpong.webm', '/Terminal/dist/assets/catfire_pingpong.webm');
+            if (srcMp4) setAttrWithFallback(srcMp4, 'src', '/Terminal/assets/catfire_pingpong.mp4', '/Terminal/dist/assets/catfire_pingpong.mp4');
+            // For <img> fallback inside <video>
+            var img = video.querySelector('img.bg-center-img');
+            setSrcWithFallback(img, '/Terminal/assets/catfire.gif', '/Terminal/dist/assets/catfire.gif');
           }
         } catch (e) {}
       })();
@@ -256,7 +314,16 @@
       <div class="border-frame"></div>
     </div>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- Development loader for local Vite; GH Pages uses dynamic loader above -->
+    <script>
+      (function () {
+        if (/\.github\.io$/.test(location.hostname || "")) return;
+        var s = document.createElement('script');
+        s.type = 'module';
+        s.src = '/src/main.tsx';
+        document.head.appendChild(s);
+      })();
+    </script>
     <script>
       // Hide splash after window load and at least 2s elapsed
       (function () {
