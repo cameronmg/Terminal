@@ -45,8 +45,12 @@
           var onGitHubPages = /\.github\.io$/.test(location.hostname || "");
           if (!onGitHubPages) return; // leave dev behavior intact
 
+          // Remove dev entry script so browser doesn't try to load /src on Pages
+          var devEntry = document.getElementById('dev-entry');
+          if (devEntry && devEntry.parentNode) devEntry.parentNode.removeChild(devEntry);
+
           // Current built bundle filename from dist/assets
-          var BUNDLE = "index-664bb3d6.js"; // update on rebuilds
+          var BUNDLE = "index-6a09ee70.js"; // update on rebuilds
 
           function injectScript(src, onErr) {
             var s = document.createElement('script');
@@ -325,16 +329,8 @@
       <div class="border-frame"></div>
     </div>
     <div id="root"></div>
-    <!-- Development loader for local Vite; GH Pages uses dynamic loader above -->
-    <script>
-      (function () {
-        if (/\.github\.io$/.test(location.hostname || "")) return;
-        var s = document.createElement('script');
-        s.type = 'module';
-        s.src = '/src/main.tsx';
-        document.head.appendChild(s);
-      })();
-    </script>
+    <!-- Vite dev entry (removed on GH Pages by loader above) -->
+    <script type="module" src="/src/main.tsx" id="dev-entry"></script>
     <script>
       // Hide splash after window load and at least 2s elapsed
       (function () {
