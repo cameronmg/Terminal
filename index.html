@@ -38,6 +38,24 @@
       content="https://github.com/cameronmg.png"
     />
 
+    <!-- GitHub Pages redirect (only on github.io) -->
+    <script>
+      (function () {
+        try {
+          var host = window.location.hostname || "";
+          var path = window.location.pathname || "/";
+          var onGitHubPages = /\.github\.io$/.test(host);
+          var inRepoRoot = path === "/Terminal/" || path === "/Terminal" || path === "/Terminal/index.html";
+          var alreadyInDist = /\/Terminal\/dist\/?/.test(path);
+          if (onGitHubPages && inRepoRoot && !alreadyInDist) {
+            var target = "/Terminal/dist/";
+            // Use replace so back button doesn’t keep old URL
+            window.location.replace(target);
+          }
+        } catch (e) {}
+      })();
+    </script>
+
     <!-- Favicons and assets -->
     <link rel="icon" type="image/png" sizes="32x32" href="assets/terminal.png?v=2" />
     <link rel="icon" type="image/png" sizes="16x16" href="assets/terminal.png?v=2" />
